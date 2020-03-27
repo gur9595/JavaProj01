@@ -1,23 +1,19 @@
-package project1.ver06;
+package project1.ver08;
 
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
-
-import project1.ver07.MenuItem;
 
 public class PhoneBookManager implements SubMenuItem,MenuItem{
 
-	private Phoneinfo[] phoneinfo;
-	private int numP;
-	public PhoneBookManager(int num) {
-		phoneinfo=new Phoneinfo[num];
-		numP=0;
-	}
+	HashSet<Phoneinfo> phoneSet = new HashSet<Phoneinfo>();
+
 	public void printMenu() throws MenuSelectException{
 		boolean exit=true;
 		int selectNum;
 		Scanner scan= new Scanner(System.in);
-		while(exit) {
+		while(true) {
 			try {
 				System.out.println("1. 데이터 입력");
 				System.out.println("2. 데이터 검색");
@@ -26,7 +22,11 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.println("5. 프로그램 종료");
 				System.out.print("선택: ");
 				selectNum = scan.nextInt();
-				
+
+				if(selectNum<1||selectNum>5) {
+					MenuSelectException menuSelectException =new MenuSelectException();
+					throw menuSelectException;
+				}
 				switch(selectNum) {
 				case MenuItem.INPUNT:
 					dataInput();
@@ -44,13 +44,12 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 					System.out.println("프로그램을 종료합니다.");
 					return;
 				}
-			} catch (InputMismatchException e) {
+			}catch (InputMismatchException e) {
 				System.out.println("문자말고 1~5숫자만 입력하세요");
 				scan.nextLine();
 			} catch (NullPointerException e) {
 				System.out.println("데이터가 없습니다.");
 			}
-
 		}
 	}
 
@@ -67,21 +66,25 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		Scanner scan =new Scanner(System.in);
 		System.out.println("1.일반  2.동창  3.회사");
 		choNum = scan.nextInt();
-
+		scan.nextLine();
+		
 		if(choNum==NOMARL) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
+			checking(iname);
+			
 			System.out.println("전화번호:");
 			iphoneNumber=scan.nextLine();
 
 			Phoneinfo phoneinfo1 =new Phoneinfo(iname, iphoneNumber);
-			phoneinfo[numP++] = phoneinfo1;
+			phoneSet.add(phoneinfo1);
+			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
 
 		} else if(choNum==SCHOOL) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
+			checking(iname);
+			
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
 
@@ -92,12 +95,13 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 			igrade=scan.nextInt();
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
-			phoneinfo[numP++]= schoolInfo;
-			
+			phoneSet.add(schoolInfo);
+			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
+
 		} else if(choNum==COMPANY) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
+			checking(iname);
 
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
@@ -106,7 +110,9 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 			icomName=scan.nextLine();
 
 			PhoneCompanyInfo companyInfo =new PhoneCompanyInfo(iname, iphoneNumber, icomName);
-			phoneinfo[numP++]= companyInfo;
+			phoneSet.add(companyInfo);
+			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
+
 
 		} else {
 			System.out.println("숫자만이라고");
@@ -116,23 +122,30 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 	//데이터 검색
 	public void dataSearch() {
+		boolean aaa = false;
 		Scanner scan= new Scanner(System.in);
+
 		System.out.println("검색할 이름: ");
 		String  searchName = scan.nextLine();
-		boolean aaa = false;
-		
-		for(int i=0 ;i<numP;i++) {
-			if(searchName.compareTo(phoneinfo[i].name)==0) {
-					phoneinfo[i].showPhoneInfo();
-					aaa=true;
-				}
-				System.out.println("검색 완료");
+
+
+		Iterator<Phoneinfo> itr = phoneSet.iterator();
+		while(itr.hasNext()) {
+			Phoneinfo phoneinfo = itr.next();
+
+			if(searchName.equals(phoneinfo.name)) {
+				System.out.println(phoneinfo);
+				aaa=true;
+				System.out.println("검색완료");
+			}
 		}
-		if(aaa == false) {
+		if(aaa== false) {
 			NullPointerException nullPointerException = new NullPointerException();
-			
+
 			throw nullPointerException;
 		}
+
+
 	}
 
 	//데이터 삭제
@@ -142,33 +155,52 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		String deletName=scan.nextLine();
 
 		int deleteIndex=-1;
-		for(int i=0; i<numP ;i++) {
-			if(deletName.compareTo(phoneinfo[i].name)==0) {
-				phoneinfo[i]=null;
 
-				deleteIndex=i;
+		Iterator<Phoneinfo> itr = phoneSet.iterator();
+		while(itr.hasNext()) {
+			Phoneinfo phoneinfo = itr.next();
+			if(deletName.equals(phoneinfo.name)) {
+				itr.remove();
+				System.out.println("삭제완료");
+			}
 
-				numP--;
+			if(deleteIndex==-1) {
+				System.out.println("삭제된 데이터가 없습니다");
 			}
 		}
-		if(deleteIndex==-1) {
-			System.out.println("삭제된 데이터가 없습니다");
-		}else {
-			for(int i=deleteIndex; i<numP; i++) {
-				phoneinfo[i]=phoneinfo[i+1];
-			}
-			System.out.println("삭제완료");
-		}
+
+
 	}
 
 	//전체출력
 	public void dataAllShow() {
-		for(int i=0;i<numP;i++) {
-			phoneinfo[i].showPhoneInfo();
+		for(Phoneinfo phone : phoneSet) {
+			System.out.println(phone.toString());
+
 			System.out.println("------------------------");
 		}
 	}
 
+	public void checking(String iname) {
+		
+		int num = 0;
+		Scanner scan =new Scanner(System.in);
+		Iterator<Phoneinfo> itr= phoneSet.iterator();
+		
+		while (itr.hasNext()) {
+			Phoneinfo phoneinfo = itr.next();
+			if(iname.equals(phoneinfo.name)) {
+				System.out.println("이름이 중복이야~ 1.덮쓰  2.돌아가기");
+				num= scan.nextInt();
+				if(num==1) {
+					System.out.println("덮쓰 완료");
+				}else if(num==2) {
+					dataInput();
+				}
+			}
+
+		}
+	}
 }
 
 

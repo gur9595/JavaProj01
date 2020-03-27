@@ -1,12 +1,12 @@
 package project1;
 
-import project1.ver04.Phoneinfo;
+import project1.ver04.PhoneBookManager;
 
 public class PhoneBookVer04 {
 
 	public static void main(String[] args) {
-		Phoneinfo phoneinfo =new Phoneinfo(null, null);
-		phoneinfo.start();
+		PhoneBookManager bookManager =new PhoneBookManager(100);
+		bookManager.printMenu();
 	}
 
 }

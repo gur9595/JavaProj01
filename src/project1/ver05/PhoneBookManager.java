@@ -2,7 +2,7 @@ package project1.ver05;
 
 import java.util.Scanner;
 
-public class PhoneBookManager implements SubMenuItem{
+public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 	private Phoneinfo[] phoneinfo;
 	private int numP;
@@ -11,6 +11,38 @@ public class PhoneBookManager implements SubMenuItem{
 		numP=0;
 	}
 
+	//시작 메소드
+		public void printMenu() {
+			boolean exit=true;
+			int selectNum;
+			Scanner scan= new Scanner(System.in);
+			while(exit) {
+				
+				System.out.println("1. 데이터 입력");
+				System.out.println("2. 데이터 검색");
+				System.out.println("3. 데이터 삭제");
+				System.out.println("4. 주소록 출력");
+				System.out.println("5. 프로그램 종료");
+				System.out.print("선택: ");
+				selectNum = scan.nextInt();
+				scan.nextLine();
+				if(selectNum == INPUNT) {
+					dataInput();
+				} else if(selectNum == SEARCH) { 
+					dataSearch();
+				} else if(selectNum == DELETE) { 
+					dataDelete();
+				} else if(selectNum == ALLSHOW) { 
+					dataAllShow();
+				} else if(selectNum == EXIT) {
+					exit=false;
+				} else {
+					System.out.println("숫자만 입력해라");
+				}			
+		
+			}
+			
+		}
 
 	//데이터 저장
 	public void dataInput() {
@@ -39,19 +71,6 @@ public class PhoneBookManager implements SubMenuItem{
 			System.out.println("이름: ");
 			iname=scan.nextLine();
 			scan.nextLine();
-
-			System.out.println("전화번호: ");
-			iphoneNumber=scan.nextLine();
-
-			System.out.println("회사명: ");
-			icomName=scan.nextLine();
-
-			PhoneCompanyInfo companyInfo =new PhoneCompanyInfo(iname, iphoneNumber, icomName);
-			phoneinfo[numP++]= companyInfo;
-		} else if(choNum==COMPANY) {
-			System.out.println("이름: ");
-			iname=scan.nextLine();
-			scan.nextLine();
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
 
@@ -63,6 +82,20 @@ public class PhoneBookManager implements SubMenuItem{
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneinfo[numP++]= schoolInfo;
+		
+		} else if(choNum==COMPANY) {
+			System.out.println("이름: ");
+			iname=scan.nextLine();
+			scan.nextLine();
+
+			System.out.println("전화번호: ");
+			iphoneNumber=scan.nextLine();
+
+			System.out.println("회사명: ");
+			icomName=scan.nextLine();
+
+			PhoneCompanyInfo companyInfo =new PhoneCompanyInfo(iname, iphoneNumber, icomName);
+			phoneinfo[numP++]= companyInfo;
 
 		} else {
 			System.out.println("숫자만이라고");

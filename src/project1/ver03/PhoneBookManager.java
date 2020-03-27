@@ -11,7 +11,37 @@ public class PhoneBookManager {
 		phoneinfo=new Phoneinfo[num];
 		numP=0;
 	}
-	
+	//시작 메소드
+		public void printMenu() {
+			boolean exit=true;
+			int selectNum;
+			Scanner scan= new Scanner(System.in);
+			while(exit) {
+				
+				System.out.println("1. 데이터 입력");
+				System.out.println("2. 데이터 검색");
+				System.out.println("3. 데이터 삭제");
+				System.out.println("4. 주소록 출력");
+				System.out.println("5. 프로그램 종료");
+				System.out.print("선택: ");
+				selectNum = scan.nextInt();
+				scan.nextLine();
+				if(selectNum == 1) {
+					dataInput();
+				} else if(selectNum == 2) { 
+					dataSearch();
+				} else if(selectNum == 3) { 
+					dataDelete();
+				} else if(selectNum == 4) { 
+					dataAllShow();
+				} else if(selectNum == 5) {
+					exit=false;
+				} else {
+					System.out.println("숫자만 입력해라");
+				}			
+			}
+			
+		}
 	
 	//데이터 저장
 	public void dataInput() {
