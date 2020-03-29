@@ -1,9 +1,6 @@
 package project1.ver04;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import project1.ver07.MenuItem;
 
 public class PhoneBookManager {
 
@@ -27,21 +24,22 @@ public class PhoneBookManager {
 			System.out.println("5. 프로그램 종료");
 			System.out.print("선택: ");
 			selectNum = scan.nextInt();
+			scan.nextLine();
 
 			switch(selectNum) {
-			case MenuItem.INPUNT:
+			case 1:
 				dataInput();
 				break;
-			case MenuItem.SEARCH:
+			case 2:
 				dataSearch();
 				break;
-			case MenuItem.DELETE:
+			case 3:
 				dataDelete();
 				break;
-			case MenuItem.ALLSHOW:
+			case 4:
 				dataAllShow();
 				break;
-			case MenuItem.EXIT:
+			case 5:
 				System.out.println("프로그램을 종료합니다.");
 				return;
 			}
@@ -61,11 +59,11 @@ public class PhoneBookManager {
 		Scanner scan =new Scanner(System.in);
 		System.out.println("1.일반  2.동창  3.회사");
 		choNum = scan.nextInt();
-
+		scan.nextLine();
 		if(choNum==1) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
+			
 			System.out.println("전화번호:");
 			iphoneNumber=scan.nextLine();
 

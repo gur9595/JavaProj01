@@ -2,8 +2,6 @@ package project1.ver03;
 
 import java.util.Scanner;
 
-import project1.ver07.MenuItem;
-
 public class PhoneBookManager {
 
 	private Phoneinfo[] phoneinfo;
@@ -28,19 +26,19 @@ public class PhoneBookManager {
 			selectNum = scan.nextInt();
 
 			switch(selectNum) {
-			case MenuItem.INPUNT:
+			case 1:
 				dataInput();
 				break;
-			case MenuItem.SEARCH:
+			case 2:
 				dataSearch();
 				break;
-			case MenuItem.DELETE:
+			case 3:
 				dataDelete();
 				break;
-			case MenuItem.ALLSHOW:
+			case 4:
 				dataAllShow();
 				break;
-			case MenuItem.EXIT:
+			case 5:
 				System.out.println("프로그램을 종료합니다.");
 				return;
 			}

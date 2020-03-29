@@ -4,9 +4,9 @@ import project1.ver09.PhoneBookManager;
 
 public class PhoneBookVer09 {
 
-	public static void main(String[] args) {
-		PhoneBookManager bookManager =new PhoneBookManager(100);
+	public static void main(String[] args){
+		PhoneBookManager bookManager =new PhoneBookManager();
 		bookManager.printMenu();
 	}
-
+	
 }

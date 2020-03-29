@@ -1,22 +1,15 @@
 package project1.ver09;
 
+import java.sql.SQLException;
 import java.util.Scanner;
-
-import project1.ver07.MenuItem;
 
 public class PhoneBookManager {
 
-	private Phoneinfo[] phoneinfo;
-	private int numP;
-
-	public PhoneBookManager(int num) {
-		phoneinfo=new Phoneinfo[num];
-		numP=0;
-	}
 	//시작 메소드
 	public void printMenu() {
 		int selectNum;
 		Scanner scan= new Scanner(System.in);
+
 		while(true) {
 
 			System.out.println("1. 데이터 입력");
@@ -28,19 +21,19 @@ public class PhoneBookManager {
 			selectNum = scan.nextInt();
 
 			switch(selectNum) {
-			case MenuItem.INPUNT:
+			case 1:
 				dataInput();
 				break;
-			case MenuItem.SEARCH:
+			case 2:
 				dataSearch();
 				break;
-			case MenuItem.DELETE:
+			case 3:
 				dataDelete();
 				break;
-			case MenuItem.ALLSHOW:
+			case 4:
 				dataAllShow();
 				break;
-			case MenuItem.EXIT:
+			case 5:
 				System.out.println("프로그램을 종료합니다.");
 				return;
 			}
@@ -49,71 +42,136 @@ public class PhoneBookManager {
 	}
 
 	//데이터 저장
-	public void dataInput() {
+	public void dataInput() {		
 		String iname;
 		String iphoneNumber;
 		String ibirthday;
+
 		Scanner scan =new Scanner(System.in);
 
-		System.out.println("이름: ");
-		iname=scan.nextLine();
-		System.out.println("전화번호");
-		iphoneNumber=scan.nextLine();
-		System.out.println("생일");
-		ibirthday=scan.nextLine();
+		IConnectImpl connectImpl =new IConnectImpl();
+		connectImpl.connect("kosmo", "1234");
 
-		Phoneinfo phoneinfo1 =new Phoneinfo(iname, iphoneNumber, ibirthday);
-		phoneinfo[numP++] = phoneinfo1;
+		try {
+			String query ="INSERT into phonebook_tb values (?, ?, ?)";
+			connectImpl.psmt = connectImpl.con.prepareStatement(query);
+
+			System.out.println("이름 : ");
+			iname= scan.nextLine();
+
+			System.out.println("전화번호 : ");
+			iphoneNumber= scan.nextLine();
+
+			System.out.println("생일 : ");
+			ibirthday =scan.nextLine();
+
+			connectImpl.psmt.setString(1, iname);
+			connectImpl.psmt.setString(2, iphoneNumber);
+			connectImpl.psmt.setString(3, ibirthday);
+
+			int affected = connectImpl.psmt.executeUpdate();
+			System.out.println(affected + "행이 입력되었습니다.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			connectImpl.close();
+		}
+
 	}
 
 	//데이터 검색
 	public void dataSearch() {
-		Scanner scan= new Scanner(System.in);
-		System.out.println("검색할 이름: ");
-		String  searchName = scan.nextLine();
-		for(int i=0 ;i<numP;i++) {
-			if(searchName.compareTo(phoneinfo[i].name)==0) {
-				phoneinfo[i].showPhoneInfo();
-				System.out.println("검색 완료");
+		IConnectImpl connectImpl =new IConnectImpl();
+		connectImpl.connect("kosmo", "1234");
+
+		Scanner scan= new Scanner(System.in);		
+		String name;
+
+		try {
+
+			System.out.println("찾는 이름을 입력 하세요 : ");
+			name= scan.nextLine();
+			connectImpl.stmt =connectImpl.con.createStatement();
+
+			String query="select * from phonebook_tb where iname like '"+name+"'";
+
+			connectImpl.rs =connectImpl.stmt.executeQuery(query);
+
+
+
+			while (connectImpl.rs.next()) {
+				connectImpl.psmt = connectImpl.con.prepareStatement(query);
+
+				String iname= connectImpl.rs.getString(1);
+				String iphoneNumber= connectImpl.rs.getString(2);
+				String ibirthday= connectImpl.rs.getString(3);
+
+				System.out.printf("이름 : %s \n",iname);
+				System.out.printf("전화번호 : %s \n",iphoneNumber);
+				System.out.printf("생일 : %s \n",ibirthday);
+
 			}
+			connectImpl.psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connectImpl.close();
 		}
 	}
 
 	//데이터 삭제
 	public void dataDelete() {
-		Scanner scan = new  Scanner(System.in);
-		System.out.println("삭제할 이름을 입력하세요");
-		String deletName=scan.nextLine();
-
-		int deleteIndex=-1;
-		for(int i=0; i<numP ;i++) {
-			if(deletName.compareTo(phoneinfo[i].name)==0) {
-				phoneinfo[i]=null;
-
-				deleteIndex=i;
-
-				numP--;
-			}
+		IConnectImpl connectImpl =new IConnectImpl();
+		connectImpl.connect("kosmo", "1234");
+		Scanner scan= new Scanner(System.in);
+		String name;
+		try {
+			String query = "delete from phonebook_tb where iname=?";
+			connectImpl.psmt = connectImpl.con.prepareStatement(query);
+			System.out.println("삭제할 아이디를 입력하세요: ");
+			name =scan.nextLine();
+			connectImpl.psmt.setString(1,name);
+			
+			connectImpl.psmt.executeUpdate();
+			System.out.println("삭제되었습니다.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connectImpl.close();
 		}
-		if(deleteIndex==-1) {
-			System.out.println("삭제된 데이터가 없습니다");
-		}else {
-			for(int i=deleteIndex; i<numP; i++) {
-				phoneinfo[i]=phoneinfo[i+1];
-			}
-			System.out.println("삭제완료");
-		}
+		
 	}
 	//전체출력
 	public void dataAllShow() {
-		for(int i=0;i<numP;i++) {
-			phoneinfo[i].showPhoneInfo();
-			System.out.println("------------------------");
+		IConnectImpl connectImpl =new IConnectImpl();
+		connectImpl.connect("kosmo", "1234");
+		try {
+			String query="select * from phonebook_tb";
+			connectImpl.psmt = connectImpl.con.prepareStatement(query);
+			connectImpl.rs = connectImpl.psmt.executeQuery();
+			
+			while (connectImpl.rs.next()) {
+				String iname = connectImpl.rs.getString(1);
+				String iphoneNumber = connectImpl.rs.getString(1);
+				String ibirthday = connectImpl.rs.getString(1);
+				
+				System.out.printf("이름: %s \n",iname);
+				System.out.printf("전화번호: %s \n",iphoneNumber);
+				System.out.printf("생일: %s \n",ibirthday);
+				System.out.println("-------------------------------");
+			}
+			connectImpl.psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connectImpl.close();
 		}
 	}
+
 }
-
-
 
 
 
