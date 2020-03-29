@@ -10,7 +10,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 	HashSet<Phoneinfo> phoneSet = new HashSet<Phoneinfo>();
 
 	public void printMenu() throws MenuSelectException{
-		boolean exit=true;
+		
 		int selectNum;
 		Scanner scan= new Scanner(System.in);
 		while(true) {
@@ -161,7 +161,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 			Phoneinfo phoneinfo = itr.next();
 			if(deletName.equals(phoneinfo.name)) {
 				itr.remove();
-				System.out.println("삭제완료");
+				System.out.println("완료");
 			}
 
 			if(deleteIndex==-1) {
@@ -193,6 +193,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.println("이름이 중복이야~ 1.덮쓰  2.돌아가기");
 				num= scan.nextInt();
 				if(num==1) {
+					itr.remove();
 					System.out.println("덮쓰 완료");
 				}else if(num==2) {
 					dataInput();

@@ -14,10 +14,10 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		numP=0;
 	}
 	public void printMenu() throws MenuSelectException{
-		boolean exit=true;
+
 		int selectNum;
 		Scanner scan= new Scanner(System.in);
-		while(exit) {
+		while(true) {
 			try {
 				System.out.println("1. 데이터 입력");
 				System.out.println("2. 데이터 검색");
@@ -26,7 +26,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.println("5. 프로그램 종료");
 				System.out.print("선택: ");
 				selectNum = scan.nextInt();
-				
+
 				switch(selectNum) {
 				case MenuItem.INPUNT:
 					dataInput();
@@ -93,7 +93,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneinfo[numP++]= schoolInfo;
-			
+
 		} else if(choNum==COMPANY) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
@@ -120,17 +120,17 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		System.out.println("검색할 이름: ");
 		String  searchName = scan.nextLine();
 		boolean aaa = false;
-		
+
 		for(int i=0 ;i<numP;i++) {
 			if(searchName.compareTo(phoneinfo[i].name)==0) {
-					phoneinfo[i].showPhoneInfo();
-					aaa=true;
-				}
-				System.out.println("검색 완료");
+				phoneinfo[i].showPhoneInfo();
+				aaa=true;
+			}
+			System.out.println("검색 완료");
 		}
 		if(aaa == false) {
 			NullPointerException nullPointerException = new NullPointerException();
-			
+
 			throw nullPointerException;
 		}
 	}

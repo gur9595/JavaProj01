@@ -1,8 +1,8 @@
 package project1.ver08;
 
-import project1.PhoneBookVer03;
+import java.io.*;
 
-public class Phoneinfo implements MenuItem {
+public class Phoneinfo implements Serializable   {
 	//멤버변수
 	String name;
 	String phoneNumber;

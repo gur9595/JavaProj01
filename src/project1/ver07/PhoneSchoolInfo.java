@@ -12,6 +12,7 @@ public class PhoneSchoolInfo extends Phoneinfo{
 	@Override
 	public boolean equals(Object obj) {
 		Phoneinfo phoneinfo = (Phoneinfo)obj;
+		PhoneBookManager bookManager =(PhoneBookManager)obj;
 		if(phoneinfo.name.equals(this.name)) {
 			return true;
 		}

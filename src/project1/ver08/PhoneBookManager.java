@@ -1,5 +1,9 @@
 package project1.ver08;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -10,7 +14,8 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 	HashSet<Phoneinfo> phoneSet = new HashSet<Phoneinfo>();
 
 	public void printMenu() throws MenuSelectException{
-		boolean exit=true;
+		readPhoneInfo();
+
 		int selectNum;
 		Scanner scan= new Scanner(System.in);
 		while(true) {
@@ -41,6 +46,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 					dataAllShow();
 					break;
 				case MenuItem.EXIT:
+					savaPhoneInfo();
 					System.out.println("프로그램을 종료합니다.");
 					return;
 				}
@@ -67,12 +73,12 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		System.out.println("1.일반  2.동창  3.회사");
 		choNum = scan.nextInt();
 		scan.nextLine();
-		
+
 		if(choNum==NOMARL) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
 			checking(iname);
-			
+
 			System.out.println("전화번호:");
 			iphoneNumber=scan.nextLine();
 
@@ -84,7 +90,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 			System.out.println("이름: ");
 			iname=scan.nextLine();
 			checking(iname);
-			
+
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
 
@@ -161,32 +167,29 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 			Phoneinfo phoneinfo = itr.next();
 			if(deletName.equals(phoneinfo.name)) {
 				itr.remove();
-				System.out.println("삭제완료");
 			}
 
 			if(deleteIndex==-1) {
 				System.out.println("삭제된 데이터가 없습니다");
 			}
 		}
-
-
+		System.out.println("삭제완료");
 	}
 
 	//전체출력
 	public void dataAllShow() {
 		for(Phoneinfo phone : phoneSet) {
 			System.out.println(phone.toString());
-
 			System.out.println("------------------------");
 		}
 	}
 
 	public void checking(String iname) {
-		
+
 		int num = 0;
 		Scanner scan =new Scanner(System.in);
 		Iterator<Phoneinfo> itr= phoneSet.iterator();
-		
+
 		while (itr.hasNext()) {
 			Phoneinfo phoneinfo = itr.next();
 			if(iname.equals(phoneinfo.name)) {
@@ -199,6 +202,44 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				}
 			}
 
+		}
+	}
+
+	public void savaPhoneInfo() {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(
+					new FileOutputStream("src/project1/ver08/PhoneBook.obj"));
+			Iterator<Phoneinfo> itr= phoneSet.iterator();
+
+			while (itr.hasNext()) {
+				Phoneinfo phoneinfo = itr.next();
+				out.writeObject(phoneinfo);
+			}
+			out.close();
+			
+		} catch (Exception e) {
+			System.out.println("저장안댐;;");
+			e.printStackTrace();
+		}
+	}
+
+	public void readPhoneInfo() {
+		try {
+			ObjectInputStream in = 
+					new ObjectInputStream(
+							new FileInputStream("src/project1/ver08/PhoneBook.obj"));
+			
+			while (true) {
+				Phoneinfo phoneinfo =(Phoneinfo)in.readObject();
+				if(phoneinfo==null)break;
+				phoneSet.add(phoneinfo);
+			}
+			
+			in.close();
+			dataAllShow();
+			
+		} catch (Exception e) {
+			
 		}
 	}
 }

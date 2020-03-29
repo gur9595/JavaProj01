@@ -1,8 +1,7 @@
 package project1.ver07;
 
-import project1.PhoneBookVer03;
 
-public class Phoneinfo implements MenuItem {
+public class Phoneinfo {
 	//멤버변수
 	String name;
 	String phoneNumber;
@@ -16,7 +15,7 @@ public class Phoneinfo implements MenuItem {
 	@Override
 	public boolean equals(Object obj) {
 		Phoneinfo phoneinfo = (Phoneinfo)obj;
-		if(phoneinfo.name.equals(this.name)) {
+		if(phoneinfo.name.equals(this.name)) {	
 			return true;
 		}
 		else {

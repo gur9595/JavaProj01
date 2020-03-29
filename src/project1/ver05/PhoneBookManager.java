@@ -1,6 +1,9 @@
 package project1.ver05;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import project1.ver07.MenuItem;
 
 public class PhoneBookManager implements SubMenuItem,MenuItem{
 
@@ -12,12 +15,11 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 	}
 
 	//시작 메소드
-		public void printMenu() {
-			boolean exit=true;
-			int selectNum;
-			Scanner scan= new Scanner(System.in);
-			while(exit) {
-				
+	public void printMenu() {
+		int selectNum;
+		Scanner scan= new Scanner(System.in);
+		while(true) {
+			try {
 				System.out.println("1. 데이터 입력");
 				System.out.println("2. 데이터 검색");
 				System.out.println("3. 데이터 삭제");
@@ -25,24 +27,34 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.println("5. 프로그램 종료");
 				System.out.print("선택: ");
 				selectNum = scan.nextInt();
-				scan.nextLine();
-				if(selectNum == INPUNT) {
+
+				switch(selectNum) {
+				case MenuItem.INPUNT:
 					dataInput();
-				} else if(selectNum == SEARCH) { 
+					break;
+				case MenuItem.SEARCH:
 					dataSearch();
-				} else if(selectNum == DELETE) { 
+					break;
+				case MenuItem.DELETE:
 					dataDelete();
-				} else if(selectNum == ALLSHOW) { 
+					break;
+				case MenuItem.ALLSHOW:
 					dataAllShow();
-				} else if(selectNum == EXIT) {
-					exit=false;
-				} else {
-					System.out.println("숫자만 입력해라");
-				}			
-		
+					break;
+				case MenuItem.EXIT:
+					System.out.println("프로그램을 종료합니다.");
+					return;
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("문자말고 1~5숫자만 입력하세요");
+				scan.nextLine();
+			} catch (NullPointerException e) {
+				System.out.println("데이터가 없습니다.");
 			}
-			
+
 		}
+
+	}
 
 	//데이터 저장
 	public void dataInput() {
@@ -82,7 +94,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneinfo[numP++]= schoolInfo;
-		
+
 		} else if(choNum==COMPANY) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();

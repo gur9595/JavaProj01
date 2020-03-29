@@ -1,6 +1,9 @@
 package project1.ver04;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import project1.ver07.MenuItem;
 
 public class PhoneBookManager {
 
@@ -12,37 +15,39 @@ public class PhoneBookManager {
 	}
 
 	//시작 메소드
-		public void printMenu() {
-			boolean exit=true;
-			int selectNum;
-			Scanner scan= new Scanner(System.in);
-			while(exit) {
-				
-				System.out.println("1. 데이터 입력");
-				System.out.println("2. 데이터 검색");
-				System.out.println("3. 데이터 삭제");
-				System.out.println("4. 주소록 출력");
-				System.out.println("5. 프로그램 종료");
-				System.out.print("선택: ");
-				selectNum = scan.nextInt();
-				scan.nextLine();
-				if(selectNum == 1) {
-					dataInput();
-				} else if(selectNum == 2) { 
-					dataSearch();
-				} else if(selectNum == 3) { 
-					dataDelete();
-				} else if(selectNum == 4) { 
-					dataAllShow();
-				} else if(selectNum == 5) {
-					exit=false;
-				} else {
-					System.out.println("숫자만 입력해라");
-				}			
-		
+	public void printMenu() {
+		int selectNum;
+		Scanner scan= new Scanner(System.in);
+		while(true) {
+
+			System.out.println("1. 데이터 입력");
+			System.out.println("2. 데이터 검색");
+			System.out.println("3. 데이터 삭제");
+			System.out.println("4. 주소록 출력");
+			System.out.println("5. 프로그램 종료");
+			System.out.print("선택: ");
+			selectNum = scan.nextInt();
+
+			switch(selectNum) {
+			case MenuItem.INPUNT:
+				dataInput();
+				break;
+			case MenuItem.SEARCH:
+				dataSearch();
+				break;
+			case MenuItem.DELETE:
+				dataDelete();
+				break;
+			case MenuItem.ALLSHOW:
+				dataAllShow();
+				break;
+			case MenuItem.EXIT:
+				System.out.println("프로그램을 종료합니다.");
+				return;
 			}
-			
-		}
+		} 
+
+	}
 
 	//데이터 저장
 	public void dataInput() {
@@ -82,8 +87,8 @@ public class PhoneBookManager {
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneinfo[numP++]= schoolInfo;
-			
-			
+
+
 		} else if(choNum==3) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
