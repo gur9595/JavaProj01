@@ -23,10 +23,12 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.print("선택: ");
 				selectNum = scan.nextInt();
 
+				
 				if(selectNum<1||selectNum>5) {
 					MenuSelectException menuSelectException =new MenuSelectException();
 					throw menuSelectException;
 				}
+				
 				switch(selectNum) {
 				case MenuItem.INPUNT:
 					dataInput();
@@ -44,7 +46,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 					System.out.println("프로그램을 종료합니다.");
 					return;
 				}
-			}catch (InputMismatchException e) {
+			} catch (InputMismatchException e) {
 				System.out.println("문자말고 1~5숫자만 입력하세요");
 				scan.nextLine();
 			} catch (NullPointerException e) {

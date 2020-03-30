@@ -154,8 +154,8 @@ public class PhoneBookManager {
 			
 			while (connectImpl.rs.next()) {
 				String iname = connectImpl.rs.getString(1);
-				String iphoneNumber = connectImpl.rs.getString(1);
-				String ibirthday = connectImpl.rs.getString(1);
+				String iphoneNumber = connectImpl.rs.getString(2);
+				String ibirthday = connectImpl.rs.getString(3);
 				
 				System.out.printf("이름: %s \n",iname);
 				System.out.printf("전화번호: %s \n",iphoneNumber);

@@ -27,4 +27,5 @@ public class PhoneCompanyInfo extends Phoneinfo{
 	public String toString() {
 		return "이름 : "+name+"\n전화번호 : "+phoneNumber+"\n회사명 : "+comName;
 	}
+	
 }

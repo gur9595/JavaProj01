@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import project1.ver07.MenuItem;
+import project1.ver07.MenuSelectException;
 
 public class PhoneBookManager implements SubMenuItem,MenuItem{
 
@@ -13,6 +14,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		phoneinfo=new Phoneinfo[num];
 		numP=0;
 	}
+	
 	public void printMenu() throws MenuSelectException{
 
 		int selectNum;
@@ -26,6 +28,11 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 				System.out.println("5. 프로그램 종료");
 				System.out.print("선택: ");
 				selectNum = scan.nextInt();
+				
+				if(selectNum<1||selectNum>5) {
+					MenuSelectException menuSelectException =new MenuSelectException();
+					throw menuSelectException;
+				}
 
 				switch(selectNum) {
 				case MenuItem.INPUNT:

@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class PhoneBookManager {
 
 	private Phoneinfo[] phoneinfo;
+	
 	private int numP;
 	public PhoneBookManager(int num) {
 		phoneinfo=new Phoneinfo[num];
