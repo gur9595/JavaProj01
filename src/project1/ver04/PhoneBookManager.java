@@ -74,7 +74,7 @@ public class PhoneBookManager {
 		} else if(choNum==2) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
+			
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
 
@@ -83,7 +83,7 @@ public class PhoneBookManager {
 
 			System.out.println("학년: ");
 			igrade=scan.nextInt();
-
+			scan.nextLine();
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneinfo[numP++]= schoolInfo;
 
@@ -91,7 +91,6 @@ public class PhoneBookManager {
 		} else if(choNum==3) {
 			System.out.println("이름: ");
 			iname=scan.nextLine();
-			scan.nextLine();
 
 			System.out.println("전화번호: ");
 			iphoneNumber=scan.nextLine();
@@ -113,6 +112,7 @@ public class PhoneBookManager {
 		Scanner scan= new Scanner(System.in);
 		System.out.println("검색할 이름: ");
 		String  searchName = scan.nextLine();
+		
 		for(int i=0 ;i<numP;i++) {
 			if(searchName.compareTo(phoneinfo[i].name)==0) {
 				phoneinfo[i].showPhoneInfo();

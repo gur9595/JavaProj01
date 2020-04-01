@@ -57,7 +57,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 
 	//데이터 저장
-	public void dataInput() {
+	public void dataInput() throws MenuSelectException {
 		String iname;
 		String iphoneNumber;
 		String icomName;
@@ -80,7 +80,6 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 			Phoneinfo phoneinfo1 =new Phoneinfo(iname, iphoneNumber);
 			phoneSet.add(phoneinfo1);
-			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
 
 		} else if(choNum==SCHOOL) {
 			System.out.println("이름: ");
@@ -98,7 +97,6 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 			PhoneSchoolInfo schoolInfo=new PhoneSchoolInfo(iname, iphoneNumber, imajor, igrade);
 			phoneSet.add(schoolInfo);
-			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
 
 		} else if(choNum==COMPANY) {
 			System.out.println("이름: ");
@@ -113,7 +111,6 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 
 			PhoneCompanyInfo companyInfo =new PhoneCompanyInfo(iname, iphoneNumber, icomName);
 			phoneSet.add(companyInfo);
-			System.out.println("[중복저장전 객체수]: "+phoneSet.size());
 
 
 		} else {
@@ -183,7 +180,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 		}
 	}
 
-	public void checking(String iname) {
+	public void checking(String iname) throws MenuSelectException {
 		
 		int num = 0;
 		Scanner scan =new Scanner(System.in);
@@ -198,7 +195,7 @@ public class PhoneBookManager implements SubMenuItem,MenuItem{
 					itr.remove();
 					System.out.println("덮쓰 완료");
 				}else if(num==2) {
-					dataInput();
+					printMenu();
 				}
 			}
 

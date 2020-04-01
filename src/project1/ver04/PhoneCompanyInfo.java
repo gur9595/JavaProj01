@@ -9,7 +9,7 @@ public class PhoneCompanyInfo extends Phoneinfo{
 	
 	@Override
 	public void showPhoneInfo() {
-		showPhoneInfo();
+		super.showPhoneInfo();
 		System.out.println("회사명: "+comName);
 	}
 	
